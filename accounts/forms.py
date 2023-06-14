@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm as BaseUserCreationForm
 from django.core.exceptions import ValidationError
 
-from .models import User, Profile, Skill
+from .models import User, Profile, Skill, Message
 
 
 class UserCreationForm(BaseUserCreationForm):
@@ -41,3 +41,9 @@ class SkillForm(forms.ModelForm):
         model = Skill
         fields = '__all__'
         exclude = ('owner',)
+
+
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ['name', 'email', 'subject', 'body']
