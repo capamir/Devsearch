@@ -4,14 +4,14 @@ from . import views
 skill = [
     path('create/', views.CreateSkillView.as_view(), name='create-skill'),
     path('update/<str:pk>', views.UpdateSkillView.as_view(), name='update-skill'),
-    path('delete/<str:pk>', views.CreateSkillView.as_view(), name='create-skill'),
+    path('delete/<str:pk>', views.CreateSkillView.as_view(), name='delete-skill'),
 
 ]
 
 message = [
     path('inbox/', views.InboxView.as_view(), name='inbox'),
     path('create/', views.CreateMessageView.as_view(), name='create-message'),
-    path('<str:pk>/', views.MessageView.as_view(), name='message-view'),
+    path('<str:pk>/', views.MessageView.as_view(), name='message'),
 ]
 
 app_name = 'accounts'
@@ -23,7 +23,7 @@ urlpatterns = [
     path('logout/', views.LogoutView.as_view(), name='logout'),
 
     path('account/', views.UserProfileView.as_view(), name='account'),
-    path('account-update/', views.UserProfileView.as_view(), name='account-update'),
+    path('account-update/', views.UserProfileView.as_view(), name='edit-account'),
     path('<str:pk>/', views.ProfileDetailView.as_view(), name='profile_detail'),
 
     path('skill/', include(skill)),

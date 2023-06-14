@@ -119,7 +119,7 @@ class CreateProjectView(View):
         return render(request, self.template_name, context)
 
 
-class UpdateProject(View):
+class UpdateProjectView(View):
     template_name = 'projects/update.html'
     form_class = ProjectForm
 
@@ -150,8 +150,8 @@ class UpdateProject(View):
         return render(request, self.template_name, context)
 
 
-class DeleteProject(View):
-    template_name = 'accounts/delete.html'
+class DeleteProjectView(View):
+    template_name = 'delete.html'
 
     def setup(self, request, *args, **kwargs):
         self.profile = request.user.profile
