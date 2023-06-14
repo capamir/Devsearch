@@ -13,7 +13,7 @@ from .forms import ReviewForm, ProjectForm
 
 
 class ProjectsView(View):
-    template_name = 'projects/home.html'
+    template_name = 'projects/projects.html'
 
     def get(self, request, *args, **kwargs):
         self.projects = self._search_projects(request)
