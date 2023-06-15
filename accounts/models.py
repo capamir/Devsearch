@@ -35,7 +35,7 @@ class Profile(models.Model):
     @property
     def imageURL(self):
         try:
-            url = self.profile_image.url
+            url = self.image.url
         except:
             url = ''
         return url

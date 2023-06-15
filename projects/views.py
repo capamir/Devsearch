@@ -126,10 +126,16 @@ class UpdateProjectView(View):
 
     def setup(self, request, *args, **kwargs):
         self.profile = request.user.profile
+        self.project = self.profile.project_set.get(id=kwargs['pk'])
         return super().setup(request, *args, **kwargs)
 
+    def dispatch(self, request, *args, **kwargs):
+        if not self.project.owner.id == self.profile.id:
+            messages.error(request, 'you cant update this post', 'danger')
+            return redirect('home:home')
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
-        self.project = self.profile.project_set.get(id=kwargs['pk'])
         form = self.form_class(instance=self.project)
 
         context = {'form': form, 'project': self.project}
@@ -137,17 +143,18 @@ class UpdateProjectView(View):
 
     def post(self, request, *args, **kwargs):
         newtags = request.POST.get('newtags').replace(',',  " ").split()
-        form = self.form_class(request.POST, request.FILES)
+        form = self.form_class(
+            request.POST, request.FILES, instance=self.project)
         if form.is_valid():
-            self.project.save()
+            project = form.save()
 
             for tag in newtags:
                 tag, created = Tag.objects.get_or_create(name=tag)
-                self.project.tags.add(tag)
+                project.tags.add(tag)
 
             return redirect('accounts:account')
 
-        context = {'form': self.form_class}
+        context = {'form': form}
         return render(request, self.template_name, context)
 
 

@@ -27,6 +27,14 @@ class Project(models.Model):
     class Meta:
         ordering = ['-vote_ratio', '-vote_total', 'title']
 
+    @property
+    def imageURL(self):
+        try:
+            url = self.image.url
+        except:
+            url = ''
+        return url
+
 
 class Review(models.Model):
     VOTE_TYPE = (
