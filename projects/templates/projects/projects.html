@@ -36,7 +36,7 @@
   <section class="projectsList">
     <div class="container">
       <div class="grid grid--three">
-        {% for project in projects %}
+        {% if projects %} {% for project in projects %}
         <div class="column">
           <div class="card project">
             <a href="{% url 'projects:project' project.id %}" class="project">
@@ -70,7 +70,7 @@
             </a>
           </div>
         </div>
-        {% endfor %}
+        {% endfor %} {% endif %}
       </div>
     </div>
   </section>

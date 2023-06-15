@@ -10,11 +10,7 @@
       <p>Create a new developer account</p>
     </div>
 
-    <form
-      method="POST"
-      action="{% url 'accounts:register' %}"
-      class="form auth__form"
-    >
+    <form method="POST" action="" class="form auth__form">
       {% csrf_token %} {% for field in form %}
       <div class="form__field">
         <label for="formInput#text">{{field.label}}</label>
@@ -32,7 +28,7 @@
       {% endfor %}
 
       <div class="auth__actions">
-        <input class="btn btn--sub btn--lg" type="submit" value="Sign  In" />
+        <input class="btn btn--sub btn--lg" type="submit" value="Sign  Up" />
       </div>
     </form>
     <div class="auth__alternative">

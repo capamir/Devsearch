@@ -19,12 +19,9 @@ class UserCreationForm(BaseUserCreationForm):
         return email
 
 
-class UserLoginForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
-
-    class Meta:
-        model = Profile
-        fields = ('username', 'password')
+class UserLoginForm(forms.Form):
+    username = forms.CharField(widget=forms.TextInput())
+    password = forms.CharField(widget=forms.PasswordInput())
 
 
 class ProfileForm(forms.ModelForm):

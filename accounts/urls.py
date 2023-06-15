@@ -24,7 +24,7 @@ urlpatterns = [
 
     path('account/', views.UserProfileView.as_view(), name='account'),
     path('account-update/', views.UserProfileView.as_view(), name='edit-account'),
-    path('<str:pk>/', views.ProfileDetailView.as_view(), name='profile_detail'),
+    path('<str:pk>/', views.ProfileDetailView.as_view(), name='profile-detail'),
 
     path('skill/', include(skill)),
     path('message/', include(message)),

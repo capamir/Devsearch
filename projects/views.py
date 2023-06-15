@@ -33,9 +33,10 @@ class ProjectsView(View):
         tags = Tag.objects.filter(name__icontains=self.search_query)
 
         projects = Project.objects.distinct().filter(
-            Q(name__icontains=self.search_query) |
-            Q(short_intro__icontains=self.search_query) |
-            Q(skill__in=tags)
+            Q(title__icontains=self.search_query) |
+            Q(description__icontains=self.search_query) |
+            Q(owner__name__icontains=self.search_query) |
+            Q(tags__in=tags)
         )
 
         return projects

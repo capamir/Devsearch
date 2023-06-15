@@ -18,18 +18,44 @@ from .models import Profile, Skill
 # Create your views here.
 
 
-class LoginView(FormView):
+class LoginView(View):
     form_class = UserLoginForm
     template_name = 'accounts/auth/login.html'
-    success_url = '/'
+    # success_url = '/'
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('accounts:profiles')
         return super().dispatch(request, *args, **kwargs)
 
+    def get(self, request, *args, **kwargs):
+        context = {'form': self.form_class}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(
+                request,
+                username=cd.get('username'),
+                password=cd.get('password'),
+            )
+            if user is not None:
+                login(request, user)
+                messages.success(
+                    request, 'You logged in successfully', 'info')
+                return redirect('accounts:profiles')
+            else:
+                messages.error(
+                    request, 'username or password is incorrect', 'warning')
+                return render(request, self.template_name, {'form': form})
+
     def form_valid(self, form):
         user = self._login_user(form.cleaned_data)
+        if user is None:
+            return self.form_invalid(form)
+
         return super().form_valid(form)
 
     def _login_user(self, data):
@@ -43,7 +69,6 @@ class LoginView(FormView):
             messages.success(
                 self.request, 'You logged in successfully', 'info')
         else:
-            self.form_invalid(data)
             messages.error(
                 self.request, 'username or password is incorrect', 'warning')
 
