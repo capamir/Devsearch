@@ -52,7 +52,7 @@
             </ul>
             {% if request.user.profile.id != profile.id %}
             <a
-              href="{% url 'accounts:create-message' profile.id %}"
+              href="{% url 'accounts:send-message' profile.id %}"
               class="btn btn--sub btn--lg"
               >Send Message
             </a>
@@ -92,7 +92,7 @@
             <div class="column">
               <div class="card project">
                 <a
-                  href="{% url 'accounts:project' project.id %}"
+                  href="{% url 'projects:project' project.id %}"
                   class="project"
                 >
                   <img
@@ -105,7 +105,7 @@
                     <p>
                       <a
                         class="project__author"
-                        href="{% url 'accounts:profile_detail' project.owner.id %}"
+                        href="{% url 'accounts:profile-detail' project.owner.id %}"
                         >By {{project.owner.name}}</a
                       >
                     </p>

@@ -1,20 +1,22 @@
 from django.urls import path, include
 from . import views
 
+app_name = 'accounts'
+
 skill = [
     path('create/', views.CreateSkillView.as_view(), name='create-skill'),
-    path('update/<str:pk>', views.UpdateSkillView.as_view(), name='update-skill'),
-    path('delete/<str:pk>', views.CreateSkillView.as_view(), name='delete-skill'),
+    path('update/<str:pk>/', views.UpdateSkillView.as_view(), name='update-skill'),
+    path('delete/<str:pk>/', views.CreateSkillView.as_view(), name='delete-skill'),
 
 ]
 
 message = [
     path('inbox/', views.InboxView.as_view(), name='inbox'),
-    path('create/', views.CreateMessageView.as_view(), name='create-message'),
     path('<str:pk>/', views.MessageView.as_view(), name='message'),
+    path('create-message/<str:pk>/', views.CreateMessageView.as_view(),
+         name='send-message'),
 ]
 
-app_name = 'accounts'
 urlpatterns = [
     path('', views.ProfilesView.as_view(), name='profiles'),
 

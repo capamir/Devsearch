@@ -2,10 +2,10 @@
 <!-- Main Section -->
 <main class="inbox my-xl">
   <div class="content-box">
-    <h3 class="inbox__title">New Messages(<span>{{unreadCount}}</span>)</h3>
+    <h3 class="inbox__title">New Messages(<span>{{unread_count}}</span>)</h3>
 
     <ul class="messages">
-      {% for message in messageRequests %} {% if message.is_read == False %}
+      {% for message in message_requests %} {% if message.is_read == False %}
       <li class="message message--unread">{% else %}</li>
 
       <li class="message">

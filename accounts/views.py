@@ -148,21 +148,22 @@ class ProfilesView(View):
             return custom_range
 
 
-class ProfileDetailView(DetailView):
+class ProfileDetailView(View):
     template_name = 'accounts/profile/profile_detail.html'
-    model = Profile
-    context_object_name = 'profiles'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def setup(self, request, *args, **kwargs):
+        self.profile = Profile.objects.get(id=kwargs['pk'])
+        return super().setup(request, *args, **kwargs)
 
-        self.object = self.get_object()
-
-        topSkills = self.object.skill_set.exclude(description__exact="")
-        context['topSkills'] = topSkills
-
-        otherSkills = self.object.skill_set.filter(description="")
-        context['otherSkills'] = otherSkills
+    def get(self, request, *args, **kwargs):
+        topSkills = self.profile.skill_set.exclude(description__exact="")
+        otherSkills = self.profile.skill_set.filter(description="")
+        context = {
+            'profile': self.profile,
+            'topSkills': topSkills,
+            'otherSkills': otherSkills
+        }
+        return render(request, self.template_name, context)
 
 
 class UserProfileView(View):
@@ -274,7 +275,7 @@ class DeleteSkillView(View):
 
 
 class InboxView(View):
-    template_name = 'message/inbox.html'
+    template_name = 'accounts/message/inbox.html'
 
     def get(self, request, *args, **kwargs):
         profile = request.user.profile
@@ -288,7 +289,7 @@ class InboxView(View):
 
 
 class MessageView(View):
-    template_name = 'message/message.html'
+    template_name = 'accounts/message/message.html'
 
     def get(self, request, *args, **kwargs):
         profile = request.user.profile
@@ -302,7 +303,7 @@ class MessageView(View):
 
 
 class CreateMessageView(View):
-    template_name = 'message/message_form.html'
+    template_name = 'accounts/message/message_form.html'
     form_class = MessageForm
 
     def setup(self, request, *args, **kwargs):
@@ -310,10 +311,10 @@ class CreateMessageView(View):
             self.sender = request.user.profile
         except:
             self.sender = None
+        self.recipient = Profile.objects.get(id=kwargs['pk'])
         return super().setup(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        self.recipient = Profile.objects.get(id=kwargs['pk'])
 
         context = {
             'form': self.form_class,
@@ -332,7 +333,7 @@ class CreateMessageView(View):
                 message.email = self.sender.email
             message.save()
             messages.success(request, 'Your message was successfully sent!')
-            return redirect('accounts:profile_detail', pk=self.recipient.id)
+            return redirect('accounts:profile-detail', pk=self.recipient.id)
 
         context = {
             'form': form,
