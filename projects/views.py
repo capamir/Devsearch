@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import View, ListView, DetailView
+from django.views.generic import View
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.db.models import Q
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -66,31 +67,42 @@ class ProjectsView(View):
             return custom_range
 
 
-class ProjectDetailsView(DetailView):
+class ProjectDetailsView(View):
     template_name = 'projects/details.html'
     form_class = ReviewForm
-    model = Project
-    context_object_name = 'project'
 
+    def setup(self, request, *args, **kwargs):
+        self.project = get_object_or_404(Project, id=kwargs['pk'])
+        return super().setup(request, *args, **kwargs)
 
-class CreateReviewView(View):
-    form_class = ReviewForm
+    def get(self, request, *args, **kwargs):
+        context = {
+            'project': self.project,
+            'form': self.form_class
+        }
+        return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        project = get_object_or_404(Project, pk=kwargs['pk'])
         form = self.form_class(request.POST)
-        review = form.save(commit=False)
-        review.project = project
-        review.owner = request.user.profile
-        review.save()
-        messages.success(request, 'Your review was successfully submitted!')
-        response = JsonResponse({
-            'review': review
-        })
-        return response
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.project = self.project
+            review.owner = request.user.profile
+            review.save()
+
+            self.project.getVoteCount
+            messages.success(
+                request, 'Your review was successfully submitted!')
+            return redirect('projects:project', pk=self.project.id)
+
+        context = {
+            'project': self.project,
+            'form': form
+        }
+        return render(request, self.template_name, context)
 
 
-class CreateProjectView(View):
+class CreateProjectView(LoginRequiredMixin, View):
     template_name = 'projects/create.html'
     form_class = ProjectForm
 
@@ -120,7 +132,7 @@ class CreateProjectView(View):
         return render(request, self.template_name, context)
 
 
-class UpdateProjectView(View):
+class UpdateProjectView(LoginRequiredMixin, View):
     template_name = 'projects/update.html'
     form_class = ProjectForm
 
@@ -158,7 +170,7 @@ class UpdateProjectView(View):
         return render(request, self.template_name, context)
 
 
-class DeleteProjectView(View):
+class DeleteProjectView(LoginRequiredMixin, View):
     template_name = 'delete.html'
 
     def setup(self, request, *args, **kwargs):

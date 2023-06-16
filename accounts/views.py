@@ -3,7 +3,6 @@ from django import http
 from django.shortcuts import render, redirect
 from django.views.generic import (
     FormView, CreateView,
-    ListView, DetailView,
     View)
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
@@ -166,7 +165,7 @@ class ProfileDetailView(View):
         return render(request, self.template_name, context)
 
 
-class UserProfileView(View):
+class UserProfileView(LoginRequiredMixin, View):
     template_name = 'accounts/profile/account.html'
 
     def setup(self, request, *args, **kwargs):
@@ -184,7 +183,7 @@ class UserProfileView(View):
         return render(request, self.template_name, context)
 
 
-class UpdateUserProfileView(View):
+class UpdateUserProfileView(LoginRequiredMixin, View):
     template_name = 'accounts/profile/profile_form.html'
     form_class = ProfileForm
 
@@ -206,7 +205,7 @@ class UpdateUserProfileView(View):
         return render(request, self.template, context=context)
 
 
-class CreateSkillView(View):
+class CreateSkillView(LoginRequiredMixin, View):
     template_name = 'accounts/skill/create.html'
     form_class = SkillForm
 
@@ -231,7 +230,7 @@ class CreateSkillView(View):
         return render(request, self.template_name, context=context)
 
 
-class UpdateSkillView(View):
+class UpdateSkillView(LoginRequiredMixin, View):
     template_name = 'accounts/skill/update.html'
     form_class = SkillForm
 
@@ -256,7 +255,7 @@ class UpdateSkillView(View):
         return render(request, self.template_name, context=context)
 
 
-class DeleteSkillView(View):
+class DeleteSkillView(LoginRequiredMixin, View):
     template_name = 'delete.html'
 
     def setup(self, request, *args, **kwargs):
@@ -274,7 +273,7 @@ class DeleteSkillView(View):
         return redirect('accounts:account')
 
 
-class InboxView(View):
+class InboxView(LoginRequiredMixin, View):
     template_name = 'accounts/message/inbox.html'
 
     def get(self, request, *args, **kwargs):
@@ -288,7 +287,7 @@ class InboxView(View):
         return render(request, self.template_name, context)
 
 
-class MessageView(View):
+class MessageView(LoginRequiredMixin, View):
     template_name = 'accounts/message/message.html'
 
     def get(self, request, *args, **kwargs):
