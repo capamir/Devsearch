@@ -193,7 +193,7 @@ class UpdateUserProfileView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class(instance=self.profile)
-        context = {'form': self.form_class}
+        context = {'form': form}
         return render(request, self.template, context=context)
 
     def post(self, request, *args, **kwargs):
