@@ -55,16 +55,16 @@ class ProjectsView(View):
             page = paginator.num_pages
             self.projects = paginator.page(page)
 
-            first_page = (int(page) - 4)
-            leftIndex = first_page if first_page >= 1 else 1
+        first_page = (int(page) - 4)
+        leftIndex = first_page if first_page >= 1 else 1
 
-            last_page = (int(page) + 5)
-            num_pages = paginator.num_pages
-            rightIndex = last_page if last_page > num_pages else num_pages + 1
+        last_page = (int(page) + 5)
+        num_pages = paginator.num_pages
+        rightIndex = last_page if last_page > num_pages else num_pages + 1
 
-            custom_range = range(leftIndex, rightIndex)
+        custom_range = range(leftIndex, rightIndex)
 
-            return custom_range
+        return custom_range
 
 
 class ProjectDetailsView(View):
