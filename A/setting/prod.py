@@ -11,10 +11,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django.contrib.humanize',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
+
     # installed apps
     'projects.apps.ProjectsConfig',
     'accounts.apps.AccountsConfig',
 ]
+
+SITE_ID = 1
 
 DATABASES = {
     'default': {

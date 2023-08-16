@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 import uuid
 
 from accounts.models import Profile
@@ -52,6 +53,9 @@ class Project(models.Model):
 
         self.save()
 
+    def get_absolute_url(self):
+        return reverse("projects:project", kwargs={"pk": self.pk})
+    
 
 class Review(models.Model):
     VOTE_TYPE = (

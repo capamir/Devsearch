@@ -13,6 +13,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django.contrib.humanize',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
+
     # installed apps
     'projects.apps.ProjectsConfig',
     'accounts.apps.AccountsConfig',
@@ -21,6 +24,8 @@ INSTALLED_APPS = [
     'django_extensions',
 
 ]
+
+SITE_ID = 2
 
 DATABASES = {
     'default': {
